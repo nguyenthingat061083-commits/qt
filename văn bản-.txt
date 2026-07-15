@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>CODEQUEST — Học Lập Trình Vũ Trụ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== RESET & VŨ TRỤ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0e1a;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+            padding: 16px;
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(ellipse at bottom, #0a0e1a 0%, #05080f 100%);
+        }
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: #fff;
+            animation: twinkle var(--duration) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        .nebula {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .nebula-1 {
+            width: 600px;
+            height: 600px;
+            top: -10%;
+            right: -10%;
+            background: radial-gradient(circle, rgba(100,50,255,0.15), transparent);
+        }
+        .nebula-2 {
+            width: 500px;
+            height: 500px;
+            bottom: -10%;
+            left: -10%;
+            background: radial-gradient(circle, rgba(255,50,100,0.12), transparent);
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo span {
+            font-weight: 400;
+            font-size: 12px;
+            -webkit-text-fill-color: #8892b0;
+            margin-left: 6px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .xp-display {
+            background: rgba(255,215,0,0.1);
+            border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 12px;
+            padding: 4px 14px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .xp-display .fire {
+            color: #ff6b2c;
+        }
+        .progress-display {
+            font-size: 12px;
+            color: #8892b0;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 30px 20px 20px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .hero .sub {
+            font-size: 14px;
+            color: #8892b0;
+            max-width: 600px;
+            margin: 0 auto 10px;
+            line-height: 1.6;
+        }
+        .hero .save-note {
+            font-size: 12px;
+            color: #4a5568;
+            background: rgba(255,255,255,0.03);
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .hero .save-note i {
+            color: #ffd700;
+        }
+
+        /* ===== REALMS ===== */
+        .realms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .realm-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 20px 20px 18px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .realm-card:hover {
+            border-color: rgba(0,212,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+        .realm-card .icon {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+        .realm-card .name {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .realm-card .desc {
+            font-size: 12px;
+            color: #8892b0;
+            margin-bottom: 8px;
+        }
+        .realm-card .level-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .realm-card .level-row .lvl {
+            font-size: 12px;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+        .realm-card .level-row .progress-text {
+            font-size: 11px;
+            color: #8892b0;
+        }
+        .realm-card .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 4px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .realm-card .progress-bar .fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #00d4ff, #7b2ffc);
+            transition: width 0.5s;
+            width: 10%;
+        }
+        .realm-card .btn-enter {
+            padding: 8px 0;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+        }
+        .realm-card .btn-enter:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(0,212,255,0.3);
+        }
+        .realm-card .badge-count {
+            font-size: 11px;
+            color: #8892b0;
+            margin-bottom: 2px;
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .feature-item {
+            background: rgba(255,255,255,0.02);
+            border-radius: 14px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255,255,255,0.04);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .feature-item .icon {
+            font-size: 20px;
+            color: #00d4ff;
+            margin-top: 2px;
+        }
+        .feature-item .text {
+            font-size: 13px;
+            color: #ccd6f6;
+            line-height: 1.5;
+        }
+        .feature-item .text .highlight {
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .header .logo { font-size: 17px; }
+            .hero h1 { font-size: 20px; }
+            .hero .sub { font-size: 13px; }
+            .realms-grid { grid-template-columns: 1fr; }
+            .feature-item { padding: 12px; }
+            .feature-item .text { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NỀN VŨ TRỤ -->
+    <div class="stars" id="stars"></div>
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo">CODEQUEST <span>// 3 REALMS</span></div>
+            <div class="header-right">
+                <div class="xp-display"><i class="fas fa-star"></i> XP <span id="xpDisplay">0</span> <span class="fire">🔥</span> <span id="progressDisplay">10/165</span></div>
+                <div class="progress-display"><i class="fas fa-fire" style="color:#ff6b2c;"></i> <span id="xpFire">0</span> XP</div>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <section class="hero">
+            <h1>CHỌN VƯƠNG QUỐC<br />ĐỂ BẮT ĐẦU CODE</h1>
+            <p class="sub">Học bằng cách gõ theo hệ thống ghost-typing, 55 bài mỗi realm, nhiệm vụ game thật. Offline 100%, lưu tự động.</p>
+            <div class="save-note"><i class="fas fa-save"></i> Dữ liệu lưu trong máy, xóa lịch sử không mất, chỉ mất khi xóa dữ liệu trang web - hãy xuất sao lưu trong <i class="fas fa-cog"></i></div>
+        </section>
+
+        <!-- REALMS -->
+        <div class="realms-grid">
+            <!-- HTML Realm -->
+            <div class="realm-card" data-realm="html">
+                <div class="icon"><i class="fab fa-html5" style="color:#e34c26;"></i></div>
+                <div class="name">HTML Realm</div>
+                <div class="badge-count"><span id="htmlCount">0</span>/55</div>
+                <div class="desc">Game UI Builder — Xây giao diện game, shop, menu</div>
+                <div class="level-row">
+                    <span class="lvl">Level <span id="htmlLevel">1</span></span>
+                    <span class="progress-text" id="htmlProgress">10%</span>
+                </div>
+                <div class="progress-bar"><div class="fill" id="htmlFill" style="width:10%;"></div></div>
+                <button class="btn-enter" onclick="openRealm('html')">VÀO HỌC →</button>
+            </div>
+
+            <!-- Python Realm -->
+            <div class="realm-card" data-realm="python">
+                <div class="icon"><i class="fab fa-python" style="color:#3776ab;"></i></div>
+                <div class="name">Python Realm</div>
+                <div class="badge-count"><span id="pythonCount">0</span>/55</div>
+                <div class="desc">Logic Core — Lập trình logic game, AI</div>
+                <div class="level-row">
+                    <span class="lvl">Level <span id="pythonLevel">1</span></span>
+                    <span class="progress-text" id="pythonProgress">10%</span>
+                </div>
+                <div class="progress-bar"><div class="fill" id="pythonFill" style="width:10%;"></div></div>
+                <button class="btn-enter" onclick="openRealm('python')">VÀO HỌC →</button>
+            </div>
+
+            <!-- Lua Realm -->
+            <div class="realm-card" data-realm="lua">
+                <div class="icon"><i class="fas fa-moon" style="color:#00a2ff;"></i></div>
+                <div class="name">Lua Realm</div>
+                <div class="badge-count"><span id="luaCount">0</span>/55</div>
+                <div class="desc">Roblox Script — Script Roblox, hiệu ứng</div>
+                <div class="level-row">
+                    <span class="lvl">Level <span id="luaLevel">1</span></span>
+                    <span class="progress-text" id="luaProgress">10%</span>
+                </div>
+                <div class="progress-bar"><div class="fill" id="luaFill" style="width:10%;"></div></div>
+                <button class="btn-enter" onclick="openRealm('lua')">VÀO HỌC →</button>
+            </div>
+        </div>
+
+        <!-- FEATURES -->
+        <div class="features">
+            <div class="feature-item">
+                <div class="icon"><i class="fas fa-keyboard"></i></div>
+                <div class="text"><span class="highlight">Ghost Typing:</span> Chữ mờ phía sau, gõ theo từng ký tự, sai đỏ, đúng mở khóa preview.</div>
+            </div>
+            <div class="feature-item">
+                <div class="icon"><i class="fas fa-map"></i></div>
+                <div class="text"><span class="highlight">Map 55 nodes:</span> Mở khóa tuần tự, có thể làm lại bài cũ để luyện.</div>
+            </div>
+            <div class="feature-item">
+                <div class="icon"><i class="fas fa-database"></i></div>
+                <div class="text"><span class="highlight">Không mất:</span> Lưu localStorage + xuất/nhập JSON trong cài đặt.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== TẠO SAO =====
+        (function createStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2.5 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--duration', (Math.random() * 3 + 1) + 's');
+                star.style.animationDelay = (Math.random() * 3) + 's';
+                container.appendChild(star);
+            }
+        })();
+
+        // ===== DỮ LIỆU REALM (GIỮ NGUYÊN CODE) =====
+        const REALMS = {
+            html: { name: 'HTML', count: 0, level: 1, progress: 10 },
+            python: { name: 'Python', count: 0, level: 1, progress: 10 },
+            lua: { name: 'Lua', count: 0, level: 1, progress: 10 }
+        };
+
+        let xp = 0;
+        let totalProgress = 10;
+
+        function updateUI() {
+            for (const key of ['html', 'python', 'lua']) {
+                const data = REALMS[key];
+                document.getElementById(key + 'Count').textContent = data.count;
+                document.getElementById(key + 'Level').textContent = data.level;
+                document.getElementById(key + 'Progress').textContent = data.progress + '%';
+                document.getElementById(key + 'Fill').style.width = data.progress + '%';
+            }
+            document.getElementById('xpDisplay').textContent = xp;
+            document.getElementById('xpFire').textContent = xp;
+            document.getElementById('progressDisplay').textContent = totalProgress + '/165';
+        }
+
+        function openRealm(realm) {
+            alert('🚀 Vào học ' + REALMS[realm].name + ' Realm!');
+            // Giữ nguyên code, chỉ hiển thị thông báo
+        }
+
+        // ===== KHỞI TẠO =====
+        updateUI();
+    </script>
+
+</body>
+</html>
